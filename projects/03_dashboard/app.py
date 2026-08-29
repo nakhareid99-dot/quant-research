@@ -14,11 +14,11 @@ from src.data_fetcher import DataFetcher
 from src.portfolio_optimizer import random_portfolios, optimize_portfolio, get_min_variance_portfolio, portfolio_stats
 
 st.set_page_config(page_title="Quant Dashboard", layout="wide")
-st.title("📊 Sharpe Ratio & Efficient Frontier Dashboard")
+st.title(" Sharpe Ratio & Efficient Frontier Dashboard")
 st.markdown("---")
 
 with st.sidebar:
-    st.header("⚙️ พารามิเตอร์")
+    st.header(" พารามิเตอร์")
     default_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA"]
     tickers_input = st.text_input("ป้อนสัญลักษณ์หุ้น (คั่นด้วยเครื่องหมายจุลภาค)",
                                   value=",".join(default_tickers))
@@ -26,17 +26,17 @@ with st.sidebar:
     start_date = st.date_input("วันที่เริ่มต้น", value=pd.to_datetime("2020-01-01"))
     risk_free = st.slider("Risk-Free Rate (Annual)", min_value=0.0, max_value=0.10,
                           value=0.02, step=0.005, format="%.2f")
-    run_btn = st.button("🔄 อัปเดตข้อมูล", use_container_width=True)
+    run_btn = st.button(" อัปเดตข้อมูล", use_container_width=True)
 
 if not run_btn:
-    st.info("👈 ตั้งค่าพารามิเตอร์ใน Sidebar แล้วกด 'อัปเดตข้อมูล' เพื่อเริ่มต้น")
+    st.info(" ตั้งค่าพารามิเตอร์ใน Sidebar แล้วกด 'อัปเดตข้อมูล' เพื่อเริ่มต้น")
     st.stop()
 
 if len(tickers) < 2:
     st.error("กรุณาเลือกหุ้นอย่างน้อย 2 ตัว")
     st.stop()
 
-with st.spinner("📥 กำลังดึงข้อมูลและคำนวณ..."):
+with st.spinner(" กำลังดึงข้อมูลและคำนวณ..."):
     try:
         df_prices = DataFetcher.get_multiple_stocks(tickers, start=start_date.strftime("%Y-%m-%d"))
         returns = df_prices.pct_change().dropna()
@@ -52,14 +52,14 @@ with st.spinner("📥 กำลังดึงข้อมูลและคำ�
         st.error(f"เกิดข้อผิดพลาด: {e}")
         st.stop()
 
-st.subheader("📈 Performance Metrics")
+st.subheader(" Performance Metrics")
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("💰 Max Sharpe Ratio", f"{opt_sharpe:.2f}")
-col2.metric("📊 Optimal Return (Ann.)", f"{opt_return:.2%}")
-col3.metric("📉 Optimal Volatility (Ann.)", f"{opt_vol:.2%}")
-col4.metric("⚖️ Min Variance Return", f"{min_return:.2%}")
+col1.metric(" Max Sharpe Ratio", f"{opt_sharpe:.2f}")
+col2.metric(" Optimal Return (Ann.)", f"{opt_return:.2%}")
+col3.metric(" Optimal Volatility (Ann.)", f"{opt_vol:.2%}")
+col4.metric(" Min Variance Return", f"{min_return:.2%}")
 
-st.subheader("📋 น้ำหนักของ Optimal Portfolio (Max Sharpe)")
+st.subheader(" น้ำหนักของ Optimal Portfolio (Max Sharpe)")
 weights_df = pd.DataFrame({
     'Asset': tickers,
     'Weight (%)': np.round(optimal_weights * 100, 2)
@@ -68,7 +68,7 @@ weights_df = weights_df.sort_values('Weight (%)', ascending=False)
 st.bar_chart(weights_df.set_index('Asset'))
 st.dataframe(weights_df, use_container_width=True)
 
-st.subheader("🌐 Efficient Frontier")
+st.subheader(" Efficient Frontier")
 fig = go.Figure()
 fig.add_trace(go.Scatter(
     x=df_random['Volatility'],
@@ -115,7 +115,7 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader("📊 Simple Backtest (Comparison)")
+st.subheader(" Simple Backtest (Comparison)")
 optimal_returns = returns.dot(optimal_weights)
 cum_opt = (1 + optimal_returns).cumprod()
 eq_weights = np.array([1/len(tickers)] * len(tickers))
@@ -130,4 +130,4 @@ fig2.update_layout(title="Equity Curve (Comparison)",
                    xaxis_title="Date", yaxis_title="Cumulative Return")
 st.plotly_chart(fig2, use_container_width=True)
 
-st.success("✅ Dashboard โหลดเสร็จสมบูรณ์!")
+st.success(" Dashboard โหลดเสร็จสมบูรณ์!")
