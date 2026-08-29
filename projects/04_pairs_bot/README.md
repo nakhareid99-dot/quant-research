@@ -20,10 +20,10 @@ result = run_pairs_bot(ticker1='AAPL', ticker2='MSFT', lookback=90)
 
 ## ตัวอย่าง Output
 
-📊 Hedge Ratio: 0.4523
-📈 Cointegration p-value: 0.0234
+Hedge Ratio: 0.4523
+Cointegration p-value: 0.0234
 
-📊 ผลลัพธ์ Pairs Trading Bot
+ผลลัพธ์ Pairs Trading Bot
 ========================================
 Total Return: 12.34%
 Sharpe Ratio: 1.85
