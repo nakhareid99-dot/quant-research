@@ -157,15 +157,15 @@ def run_pairs_bot(ticker1='AAPL', ticker2='MSFT', start='2020-01-01', lookback=6
     model = sm.OLS(y, sm.add_constant(x)).fit()
     hedge_ratio = model.params.iloc[1]
     
-    print(f"📊 Hedge Ratio: {hedge_ratio:.4f}")
+    print(f" Hedge Ratio: {hedge_ratio:.4f}")
     
     # 3. ทดสอบ Cointegration
     spread = y - hedge_ratio * x
     result = adfuller(spread)
-    print(f"📈 Cointegration p-value: {result[1]:.4f}")
+    print(f" Cointegration p-value: {result[1]:.4f}")
     
     if result[1] > 0.05:
-        print("⚠️ คำเตือน: คู่หุ้นนี้ไม่มี Cointegration ที่นัยสำคัญ (p-value > 0.05)")
+        print(" คำเตือน: คู่หุ้นนี้ไม่มี Cointegration ที่นัยสำคัญ (p-value > 0.05)")
     
     # 4. สร้างสัญญาณ
     df_signals = generate_pairs_signals(df_prices, ticker1, ticker2, hedge_ratio, lookback=lookback)
@@ -174,7 +174,7 @@ def run_pairs_bot(ticker1='AAPL', ticker2='MSFT', start='2020-01-01', lookback=6
     result = backtest_pairs(df_signals, initial_capital=100000)
     
     # 6. แสดงผล
-    print("\n📊 ผลลัพธ์ Pairs Trading Bot")
+    print("\n ผลลัพธ์ Pairs Trading Bot")
     print("=" * 40)
     print(f"Total Return: {result['total_return']:.2%}")
     print(f"Sharpe Ratio: {result['sharpe_ratio']:.2f}")
